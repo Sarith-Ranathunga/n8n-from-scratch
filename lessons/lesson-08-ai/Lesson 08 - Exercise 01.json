@@ -1,0 +1,132 @@
+{
+  "updatedAt": "2026-11-10T12:10:41.013Z",
+  "createdAt": "2026-11-10T12:01:13.557Z",
+  "id": "B3l8bxC1CvFfhI4g",
+  "name": "Lesson 08 - Exercise 01",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -528,
+        -32
+      ],
+      "id": "8b0b8916-f729-47ce-b287-59ef841cdce1",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5f710fcf-6a6c-45ff-a41c-b98881e7e2b0",
+              "name": "review",
+              "value": "I ordered a blue T-shirt last week. Delivery was 3 days late and nobody answered my calls, but the shirt quality is excellent and it fits perfectly.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -304,
+        -32
+      ],
+      "id": "02ed4aa8-35c8-4526-b598-f2c3095c35f6",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=     Summarize this customer review in ONE short sentence, then say whether it is Positive, Negative or Mixed. reply in Sinhala.\n\n     Review: {{ $json.review }}",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        -80,
+        -32
+      ],
+      "id": "2ea17b21-1096-4f2d-8e47-104443f3a667",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        32,
+        144
+      ],
+      "id": "c2658351-db57-4476-9c6f-800e681d0ae1",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "nodeGroups": [],
+  "versionId": "a0c7ebc1-b1f6-44f4-a17d-d6dfece81b0b",
+  "activeVersionId": null,
+  "versionCounter": 19,
+  "triggerCount": 0,
+  "sourceWorkflowId": null,
+  "tags": [],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}

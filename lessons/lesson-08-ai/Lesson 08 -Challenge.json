@@ -1,0 +1,80 @@
+{
+  "updatedAt": "2026-11-10T13:18:45.401Z",
+  "createdAt": "2026-11-10T13:16:37.156Z",
+  "id": "7AvMo6ujelwXT5mJ",
+  "name": "Lesson 08 -Challenge",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "message",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.2,
+      "position": [
+        -448,
+        -160
+      ],
+      "id": "54fd05da-3dc0-493a-891a-20a0b75efd54",
+      "name": "Webhook",
+      "webhookId": "86cf9804-dd74-4682-835a-36c8133d6803"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "253a791c-b9c1-4e9a-a187-b41fc30bc32a",
+              "name": "message",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -224,
+        -160
+      ],
+      "id": "749d5c41-5be1-486e-aa6b-2d9174df0ed7",
+      "name": "Edit Fields"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": null,
+  "nodeGroups": [],
+  "versionId": "0a88397e-6738-472d-b637-39b76ef6c177",
+  "activeVersionId": null,
+  "versionCounter": 11,
+  "triggerCount": 0,
+  "sourceWorkflowId": null,
+  "tags": [],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}

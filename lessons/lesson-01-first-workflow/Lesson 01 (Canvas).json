@@ -1,0 +1,116 @@
+{
+  "updatedAt": "2026-11-09T12:41:38.844Z",
+  "createdAt": "2026-11-09T12:38:58.976Z",
+  "id": "OOx7OgRGPLWuuFP2",
+  "name": "Lesson 01 (Canvas)",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d0e9a812-ef80-4074-9424-98f085317421",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a4c73c9f-de35-46bc-bf26-ccaf38c1ee9c",
+              "name": "name",
+              "value": "Sarith",
+              "type": "string"
+            },
+            {
+              "id": "1dcd8ee7-99a8-4b73-8fd0-6d457bf0135a",
+              "name": "city",
+              "value": "Colombo",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "4ec2ec19-de77-4b1b-94a7-a692deccea28",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9508e44f-07a2-401b-a651-232c449247d0",
+              "name": "message",
+              "value": "=  Hello {{ $json.name }} from {{ $json.city }}!",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        448,
+        0
+      ],
+      "id": "5e988eac-ed59-4284-9f1f-93d77abf0ae2",
+      "name": "Edit Fields1"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": null,
+  "nodeGroups": [],
+  "versionId": "d1f750c2-d050-4764-a393-0c12536ca8c1",
+  "activeVersionId": null,
+  "versionCounter": 12,
+  "triggerCount": 0,
+  "sourceWorkflowId": null,
+  "tags": [],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}

@@ -1,0 +1,160 @@
+{
+  "updatedAt": "2026-11-11T06:37:05.237Z",
+  "createdAt": "2026-11-10T12:20:43.925Z",
+  "id": "3wwZT8NQH52vAd2O",
+  "name": "Lesson 08 - Exercise 03",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -512,
+        -176
+      ],
+      "id": "1c4eea52-4fa8-4748-8e51-cabed9612bad",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7c7a6e93-b573-4afc-a0f3-09a635068529",
+              "name": "message",
+              "value": "Hi! I'm Nimal. Can I get 3 blue T-shirts, size L please? Deliver to Kandy, I need them before Friday. My number is 077 123 4567.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -288,
+        -176
+      ],
+      "id": "4d3591c4-2416-44ea-904f-9ab16b7cd8d1",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.message }}",
+        "attributes": {
+          "attributes": [
+            {
+              "name": "customer_name",
+              "description": "The customer’s name"
+            },
+            {
+              "name": "product",
+              "description": "The product they want, including colour"
+            },
+            {
+              "name": "quantity",
+              "type": "number",
+              "description": "How many items"
+            },
+            {
+              "name": "size",
+              "description": "Clothing size, e.g. S, M, L, XL"
+            },
+            {
+              "name": "city",
+              "description": "Delivery city"
+            },
+            {
+              "name": "phone",
+              "description": "Phone number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1.2,
+      "position": [
+        -64,
+        -176
+      ],
+      "id": "9e45bc0a-f8ed-4de5-b4cf-b909ae1bac50",
+      "name": "Information Extractor"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        -64,
+        16
+      ],
+      "id": "c5cb4879-5f1a-45c7-80d5-b96415e0591f",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "nodeGroups": [],
+  "versionId": "761ccfe8-a14c-4926-ad1f-b62b4baf7af4",
+  "activeVersionId": null,
+  "versionCounter": 31,
+  "triggerCount": 0,
+  "sourceWorkflowId": null,
+  "tags": [],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}

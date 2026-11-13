@@ -1,0 +1,121 @@
+{
+  "updatedAt": "2026-11-09T15:59:56.274Z",
+  "createdAt": "2026-11-09T15:53:53.364Z",
+  "id": "CEXzguWn0S7ZX6rv",
+  "name": "Lesson 04 - Exercise 02",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "33b11ff4-66f4-4576-8c00-ca25726e96dd",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://jsonplaceholder.typicode.com/users",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        192,
+        0
+      ],
+      "id": "c361450d-1f08-42b6-82ed-c46608e9561b",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 4
+          },
+          "conditions": [
+            {
+              "id": "9de7dee9-fb55-488c-8422-1152a582d556",
+              "leftValue": "={{ $json.email }}",
+              "rightValue": ".biz",
+              "operator": {
+                "type": "string",
+                "operation": "endsWith"
+              }
+            },
+            {
+              "id": "15a42983-d2b3-4a11-b7ff-fb06eca42f67",
+              "leftValue": "={{ $json.email }}",
+              "rightValue": ".info",
+              "operator": {
+                "type": "string",
+                "operation": "endsWith"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.4,
+      "position": [
+        384,
+        0
+      ],
+      "id": "350ed9a3-9771-41c0-9852-1562e399fdd7",
+      "name": "If"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "nodeGroups": [],
+  "versionId": "768a52cc-9dd5-45c2-a14c-f28ade87ff92",
+  "activeVersionId": null,
+  "versionCounter": 16,
+  "triggerCount": 0,
+  "sourceWorkflowId": null,
+  "tags": [],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}

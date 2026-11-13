@@ -1,0 +1,147 @@
+{
+  "updatedAt": "2026-11-10T10:35:53.414Z",
+  "createdAt": "2026-11-10T10:33:36.250Z",
+  "id": "dTC4Upp8cJpUdr84",
+  "name": "Lesson 07 - Exercise 05",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "new-order",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.2,
+      "position": [
+        -1184,
+        -336
+      ],
+      "id": "0d2c8dd8-9289-4014-93ee-c58eed128a25",
+      "name": "Webhook",
+      "webhookId": "43a35f8d-73af-4447-8997-564a702c00b8",
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 4
+          },
+          "conditions": [
+            {
+              "id": "234bcdea-a26e-4a8e-a020-35b75772b49e",
+              "leftValue": "={{ $json.body.amount }}",
+              "rightValue": 5000,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.4,
+      "position": [
+        -960,
+        -336
+      ],
+      "id": "a7e33f3d-f006-400e-b36d-5786e510c4bb",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "=     {\n       \"orderId\": {{ $json.body.orderId }},\n       \"status\": \"needs_approval\"\n     }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -704,
+        -464
+      ],
+      "id": "d41baabd-1707-45e2-b073-9429f105a161",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"status\": \"auto_approved\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -704,
+        -240
+      ],
+      "id": "37766e4e-aa66-43ab-9a60-7c5cfbefd009",
+      "name": "Respond to Webhook1"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "nodeGroups": [],
+  "versionId": "79c98055-0997-4f19-a785-9188c1ca7f8a",
+  "activeVersionId": null,
+  "versionCounter": 2,
+  "triggerCount": 1,
+  "sourceWorkflowId": null,
+  "tags": [],
+  "versionMetadata": {
+    "name": "Lesson 07 - Exercise 05",
+    "description": ""
+  }
+}

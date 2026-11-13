@@ -1,0 +1,194 @@
+{
+  "updatedAt": "2026-11-11T06:39:51.962Z",
+  "createdAt": "2026-11-11T06:37:48.680Z",
+  "id": "l0UEURCjbx1TdypO",
+  "name": "Lesson 09 - Exercise 02",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -512,
+        -176
+      ],
+      "id": "38b2946b-d337-499a-b51c-8ea70dce4003",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7c7a6e93-b573-4afc-a0f3-09a635068529",
+              "name": "message",
+              "value": "Hi! I'm Nimal. Can I get 3 blue T-shirts, size L please? Deliver to Kandy, I need them before Friday. My number is 077 123 4567.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -288,
+        -176
+      ],
+      "id": "efa9c7aa-c6c2-4bb2-b3d9-7cd5885c050a",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.message }}",
+        "attributes": {
+          "attributes": [
+            {
+              "name": "customer_name",
+              "description": "The customer’s name"
+            },
+            {
+              "name": "product",
+              "description": "The product they want, including colour"
+            },
+            {
+              "name": "quantity",
+              "type": "number",
+              "description": "How many items"
+            },
+            {
+              "name": "size",
+              "description": "Clothing size, e.g. S, M, L, XL"
+            },
+            {
+              "name": "city",
+              "description": "Delivery city"
+            },
+            {
+              "name": "phone",
+              "description": "Phone number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1.2,
+      "position": [
+        -64,
+        -176
+      ],
+      "id": "02adaae1-4961-4908-8475-ccbd8af24c6b",
+      "name": "Information Extractor"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        -64,
+        16
+      ],
+      "id": "03dc2b49-a5f2-4d8c-bcde-f08364186c16",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "418fe853-462c-48f8-a280-eb3e4b77d2eb",
+              "name": "summary",
+              "value": "={{ $json.output.quantity }} x {{ $json.output.product }} for {{ $json.output.customer_name }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        304,
+        -176
+      ],
+      "id": "79a21b50-f122-4684-8046-083824550ab9",
+      "name": "Edit Fields1"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Information Extractor": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "nodeGroups": [],
+  "versionId": "1461e645-cbba-4bee-8019-8ecf1e45a91a",
+  "activeVersionId": null,
+  "versionCounter": 6,
+  "triggerCount": 0,
+  "sourceWorkflowId": null,
+  "tags": [],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}

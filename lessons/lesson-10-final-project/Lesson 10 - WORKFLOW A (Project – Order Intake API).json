@@ -1,0 +1,635 @@
+{
+  "updatedAt": "2026-11-12T05:53:16.824Z",
+  "createdAt": "2026-11-11T08:57:43.940Z",
+  "id": "Gu8HGLdajQU6etBK",
+  "name": "Lesson 10 - WORKFLOW A (Project – Order Intake API)",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "orders",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.2,
+      "position": [
+        -592,
+        -96
+      ],
+      "id": "a0095bbd-8531-4e4b-913f-8816b0219706",
+      "name": "Webhook",
+      "webhookId": "83b78a21-df20-4099-a4da-e362f4dca8dc",
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.body.message }}",
+        "attributes": {
+          "attributes": [
+            {
+              "name": "customer_name",
+              "description": "The customer’s name"
+            },
+            {
+              "name": "product",
+              "description": "Must be exactly one of: T-shirt, Shirt, Dress. Leave empty if the customer did not clearly ask for one of these"
+            },
+            {
+              "name": "size",
+              "description": "Clothing size: S, M, L or XL"
+            },
+            {
+              "name": "quantity",
+              "type": "number",
+              "description": "How many items"
+            },
+            {
+              "name": "city",
+              "description": "Delivery city"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1.2,
+      "position": [
+        -400,
+        -96
+      ],
+      "id": "cb5fe6ac-bb2b-4872-81fe-09e503cda31b",
+      "name": "Information Extractor",
+      "retryOnFail": true,
+      "maxTries": 2
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        -432,
+        96
+      ],
+      "id": "d6d25520-0273-468e-8726-76087371e5ec",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 4
+          },
+          "conditions": [
+            {
+              "id": "ad44bcdc-3d5d-4643-a184-76319bf10ddb",
+              "leftValue": "={{ $json.output.product }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "2fd08688-9d5f-4fa4-9203-52b14c0bbd4c",
+              "leftValue": "={{ $json.output.quantity }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.4,
+      "position": [
+        -144,
+        -32
+      ],
+      "id": "80089630-2567-406c-9a71-094a976858b6",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"ok\": false, \"message\": \"Please tell us which product (T-shirt, Shirt or Dress) and how many you want.\" } }}",
+        "options": {
+          "responseCode": 400
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        32,
+        -112
+      ],
+      "id": "69b04cba-08ee-4e20-b865-52010e65d608",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_SPREADSHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Sarith Fashions",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "products",
+          "cachedResultUrl": ""
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "product",
+              "lookupValue": "={{ $json.output.product }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        32,
+        48
+      ],
+      "id": "678250f7-9e87-452b-a529-973cf130753c",
+      "name": "Get row(s) in sheet",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 4
+          },
+          "conditions": [
+            {
+              "id": "58b52e81-26a4-4d40-97c9-590ae8d73219",
+              "leftValue": "={{ $json.price }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.4,
+      "position": [
+        192,
+        48
+      ],
+      "id": "dc527600-e823-4913-be4e-9cf00cac6bdb",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"ok\": false, \"message\": \"Sorry, we only sell T-shirts, Shirts and Dresses.\" } }}",
+        "options": {
+          "responseCode": 400
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        416,
+        -48
+      ],
+      "id": "7fefe989-aacf-4f6c-a13e-50dcf3fdcc50",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_SPREADSHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Sarith Fashions",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1673929477,
+          "mode": "list",
+          "cachedResultName": "orders",
+          "cachedResultUrl": ""
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "orderId",
+              "displayName": "orderId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "time",
+              "displayName": "time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "customer",
+              "displayName": "customer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "product",
+              "displayName": "product",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "size",
+              "displayName": "size",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "quantity",
+              "displayName": "quantity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "city",
+              "displayName": "city",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "total",
+              "displayName": "total",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        592,
+        144
+      ],
+      "id": "999e1156-0dbb-4e87-8810-c8f01198cb8a",
+      "name": "Append row in sheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "alwaysOutputData": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"ok\": true, \"orderId\": $('Build Order').item.json.orderId, \"total\": $('Build Order').item.json.total, \"status\": $('Build Order').item.json.status, \"message\": \"Thank you \" + $('Build Order').item.json.customer + \"! Your order \" + $('Build Order').item.json.orderId + \" is \" + $('Build Order').item.json.status + \".\" } }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        784,
+        144
+      ],
+      "id": "5b34998a-0653-4a39-b224-ff99a47b07c7",
+      "name": "Respond to Webhook2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5f451e7b-c71b-4174-9db9-9b05a84fba2a",
+              "name": "orderId",
+              "value": "=ORD-{{ $now.toFormat('yyyyMMdd-HHmmss') }}",
+              "type": "string"
+            },
+            {
+              "id": "cfb5ccf6-0ce6-4a99-bc69-2484d7963b14",
+              "name": "time",
+              "value": "={{ $now.toFormat('yyyy-MM-dd HH:mm') }}",
+              "type": "string"
+            },
+            {
+              "id": "41efc848-952b-4e07-ad7d-3a1aeee7d58d",
+              "name": "customer",
+              "value": "={{ $('Information Extractor').item.json.output.customer_name }}",
+              "type": "string"
+            },
+            {
+              "id": "4d06592e-b4ac-46b2-acc5-8053daf34299",
+              "name": "phone",
+              "value": "={{ $('Webhook').item.json.body.phone }}",
+              "type": "string"
+            },
+            {
+              "id": "afd2a1d6-91a7-465e-81d3-54cf38ed3a4f",
+              "name": "product",
+              "value": "={{ $json.product }}",
+              "type": "string"
+            },
+            {
+              "id": "047cd87f-f0d8-453a-b0a6-796e5404fdb2",
+              "name": "size",
+              "value": "={{ $('Information Extractor').item.json.output.size }}",
+              "type": "string"
+            },
+            {
+              "id": "2c08d8a8-526e-4a99-b2ff-afe5e217024e",
+              "name": "quantity",
+              "value": "={{ $('Information Extractor').item.json.output.quantity }}",
+              "type": "number"
+            },
+            {
+              "id": "c1a8b696-b110-482f-b8d7-0c1a47ae67ea",
+              "name": "city",
+              "value": "={{ $('Information Extractor').item.json.output.city }}",
+              "type": "string"
+            },
+            {
+              "id": "0ef68a45-e9b0-4567-b86e-babee139d8af",
+              "name": "total",
+              "value": "={{ $('Information Extractor').item.json.output.city }}",
+              "type": "string"
+            },
+            {
+              "id": "7e7805f6-ea39-409b-931d-60f29babd264",
+              "name": "total",
+              "value": "={{ $json.price * $('Information Extractor').item.json.output.quantity }}",
+              "type": "number"
+            },
+            {
+              "id": "c811005a-7032-41d1-b87c-408645e38821",
+              "name": "status",
+              "value": "={{ $json.price * $('Information Extractor').item.json.output.quantity > 5000 ? 'needs_approval' : 'confirmed' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        416,
+        144
+      ],
+      "id": "a6a55f6c-61f0-47a1-b748-b7ea84d43bf8",
+      "name": "Build Order"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        512,
+        288
+      ],
+      "id": "a2b831d6-202d-48ad-bf6a-dc03065c818b",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Information Extractor": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Build Order",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Order": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "timezone": "Asia/Colombo",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "vIDRpeNiYF5rOK6E"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": [
+        null
+      ],
+      "recurrenceRuleSignatures": [
+        null
+      ]
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "nodeGroups": [],
+  "versionId": "50b3895a-74e7-47e2-9a20-aea066126978",
+  "activeVersionId": null,
+  "versionCounter": 134,
+  "triggerCount": 2,
+  "sourceWorkflowId": null,
+  "tags": [],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}

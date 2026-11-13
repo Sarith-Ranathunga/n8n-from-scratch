@@ -1,0 +1,106 @@
+{
+  "updatedAt": "2026-11-10T10:05:14.559Z",
+  "createdAt": "2026-11-10T09:59:35.873Z",
+  "id": "qvWoIybLH0Ww2LqO",
+  "name": "Lesson 07 - Exercise 02",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "path": "hello",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.2,
+      "position": [
+        -912,
+        -256
+      ],
+      "id": "a52bcf08-da07-4b08-b404-1aeefa0fa2fa",
+      "name": "Webhook",
+      "webhookId": "82320132-dce2-43da-8bb2-c13c404b94ee"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fc95823d-7a87-4472-b36e-474397f04e26",
+              "name": "greeting",
+              "value": "=Hello {{ $json.query.name }} from {{ $json.query.city }}! 👋",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -720,
+        -256
+      ],
+      "id": "808b8302-4b75-4437-acce-3184e93407bc",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "First Incoming Item",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -496,
+        -256
+      ],
+      "id": "ab0e6609-d21b-4160-a609-00725ca89af2",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": null,
+  "nodeGroups": [],
+  "versionId": "5c051476-5c6c-473f-9196-60dcccb61a82",
+  "activeVersionId": null,
+  "versionCounter": 25,
+  "triggerCount": 1,
+  "sourceWorkflowId": null,
+  "tags": [],
+  "versionMetadata": {
+    "name": "Lesson 07 - Exercise 02",
+    "description": ""
+  }
+}

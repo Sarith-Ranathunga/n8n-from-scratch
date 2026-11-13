@@ -1,0 +1,123 @@
+{
+  "updatedAt": "2026-11-10T12:37:54.045Z",
+  "createdAt": "2026-11-10T12:29:49.821Z",
+  "id": "1U2D0p0BDiiYb6yn",
+  "name": "Lesson 08 - Exercise 04",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        -464,
+        -160
+      ],
+      "id": "17d9635a-d429-4888-9c07-d1f0d59b9322",
+      "name": "When chat message received",
+      "webhookId": "0495455e-a7a3-407b-bd73-43ce283ae702"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "   You are a friendly customer assistant for \"Sarith Fashions\", a clothing shop in Colombo, Sri Lanka.\n   - Keep answers short and polite.\n   - We sell T-shirts, shirts and dresses in sizes S, M, L, XL.\n   - Delivery takes 2-4 working days within Sri Lanka.\n   - If you don't know something, say you will ask a staff member. Never make up prices or order details."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -240,
+        -160
+      ],
+      "id": "ef0ffff2-aa9d-4540-a309-8ace2f648cec",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        -272,
+        64
+      ],
+      "id": "2d316a39-bd07-4259-ae87-670768d9620f",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        -112,
+        112
+      ],
+      "id": "61b481ca-ce75-473c-8231-00d43a0dba89",
+      "name": "Simple Memory"
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "nodeGroups": [],
+  "versionId": "03856954-f0f5-4d10-a949-0c9c2a2d0406",
+  "activeVersionId": null,
+  "versionCounter": 10,
+  "triggerCount": 0,
+  "sourceWorkflowId": null,
+  "tags": [],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}

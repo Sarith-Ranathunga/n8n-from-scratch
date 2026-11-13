@@ -1,0 +1,174 @@
+{
+  "updatedAt": "2026-11-09T15:53:26.658Z",
+  "createdAt": "2026-11-09T15:19:11.951Z",
+  "id": "7ygpkzlDzlKVw4lu",
+  "name": "Lesson 04 - Exercise  01",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        0
+      ],
+      "id": "8c98beb2-0600-4bc5-8f2d-b86dc0fb53ab",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "     https://api.open-meteo.com/v1/forecast?latitude=6.93&longitude=79.85&current=temperature_2m,wind_speed_10m",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        -240,
+        0
+      ],
+      "id": "98daee55-f9a7-439b-a13f-04f55a06bc1a",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 4
+          },
+          "conditions": [
+            {
+              "id": "2b43bff9-e4b6-46b0-90b2-86ba4341ca04",
+              "leftValue": "={{ $json.current.temperature_2m }}",
+              "rightValue": 28,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.4,
+      "position": [
+        -16,
+        0
+      ],
+      "id": "d5e37783-0f2a-4399-92e8-a3f52e8a9289",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8cc03e7c-3fd2-4720-a93b-8bd42756f44c",
+              "name": "message",
+              "value": "=alert =🔥 Hot! It's {{ $json.current.temperature_2m }}°C. Stay hydrated.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        240,
+        -112
+      ],
+      "id": "db9cf1ed-2a88-4f88-ba8d-f1812128ade8",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bc0f2d24-3fcc-4c5b-865c-7a7e44809bb3",
+              "name": "message",
+              "value": "=alert = 😊 Pleasant: {{ $json.current.temperature_2m }}°C.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        208,
+        96
+      ],
+      "id": "59066ed2-e3b5-43c6-a681-fd2dc6fb755c",
+      "name": "Edit Fields1"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": null,
+  "nodeGroups": [],
+  "versionId": "0d3aba1c-a7fc-493d-83fa-90181044855e",
+  "activeVersionId": null,
+  "versionCounter": 38,
+  "triggerCount": 0,
+  "sourceWorkflowId": null,
+  "tags": [],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}

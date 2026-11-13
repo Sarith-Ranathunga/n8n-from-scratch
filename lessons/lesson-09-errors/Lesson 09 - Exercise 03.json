@@ -1,0 +1,69 @@
+{
+  "updatedAt": "2026-11-11T06:44:55.813Z",
+  "createdAt": "2026-11-11T06:43:32.775Z",
+  "id": "et4LUkB9rg9Q6xPk",
+  "name": "Lesson 09 - Exercise 03",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -496,
+        -176
+      ],
+      "id": "d9362103-f316-43c4-8a85-6590a72044ad",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://httpbin.org/status/503",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        -272,
+        -176
+      ],
+      "id": "fc24c8a6-c6d3-4b70-b3bd-f2b09435a0a3",
+      "name": "HTTP Request",
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": null,
+  "nodeGroups": [],
+  "versionId": "48cfd984-373f-42a4-b6e7-a5e9d34551f1",
+  "activeVersionId": null,
+  "versionCounter": 10,
+  "triggerCount": 0,
+  "sourceWorkflowId": null,
+  "tags": [],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}

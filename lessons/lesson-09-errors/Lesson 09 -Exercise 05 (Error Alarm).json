@@ -1,0 +1,202 @@
+{
+  "updatedAt": "2026-11-11T07:06:36.081Z",
+  "createdAt": "2026-11-11T07:01:33.785Z",
+  "id": "vIDRpeNiYF5rOK6E",
+  "name": "Lesson 09 -Exercise 05 (Error Alarm)",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        -528,
+        -144
+      ],
+      "id": "05dc0033-b28e-4d0c-afc2-467f70524a31",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=   You are helping a beginner who uses n8n.\n   A workflow failed. Explain in 2 short, simple sentences:\n   1) what probably went wrong, and 2) how to fix it.\n\n   Workflow: {{ $json.workflow.name }}\n   Failed node: {{ $json.execution.lastNodeExecuted }}\n   Error message: {{ $json.execution.error.message }}",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        -304,
+        -144
+      ],
+      "id": "d8d0fc83-b9eb-436c-a393-cfe3b30a07a5",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        -368,
+        64
+      ],
+      "id": "f0785963-bdf9-4b3c-b8fd-8a0035234b76",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_SPREADSHEET_ID",
+          "mode": "list",
+          "cachedResultName": "n8n Lesson 3",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1146099275,
+          "mode": "list",
+          "cachedResultName": "errors",
+          "cachedResultUrl": ""
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "time": "={{ $now.toFormat('yyyy-MM-dd HH:mm') }}",
+            "workflow": "={{ $('Error Trigger').item.json.workflow.name }}",
+            "node": "={{ $('Error Trigger').item.json.execution.lastNodeExecuted }}",
+            "error": "={{ $('Error Trigger').item.json.execution.error.message }}",
+            "explanation": "={{ $json.text }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "time",
+              "displayName": "time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "workflow",
+              "displayName": "workflow",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "node",
+              "displayName": "node",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "error",
+              "displayName": "error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "explanation",
+              "displayName": "explanation",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -16,
+        -128
+      ],
+      "id": "6d0cbd95-4ff7-486d-bd0f-b5b7d5eb8a7a",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "nodeGroups": [],
+  "versionId": "004ce91d-d2cb-45c6-8e67-6e357eac8d5a",
+  "activeVersionId": null,
+  "versionCounter": 20,
+  "triggerCount": 0,
+  "sourceWorkflowId": null,
+  "tags": [],
+  "versionMetadata": {
+    "name": "Lesson 09 - Exercise 05 (Error Alarm)",
+    "description": ""
+  }
+}

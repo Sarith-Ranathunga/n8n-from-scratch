@@ -1,0 +1,177 @@
+{
+  "updatedAt": "2026-11-10T09:13:38.797Z",
+  "createdAt": "2026-11-10T09:04:40.313Z",
+  "id": "NuW9RRXwqBbsRl0z",
+  "name": "Lesson 06 - Exercise 04",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -928,
+        -80
+      ],
+      "id": "7880143a-fb58-4400-896c-4706abd61d6b",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://dummyjson.com/products?limit=30",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        -768,
+        -80
+      ],
+      "id": "3555d659-9724-498c-8572-24cc2eb3beb1",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "products",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1.1,
+      "position": [
+        -608,
+        -80
+      ],
+      "id": "157613c1-a5a7-4759-88db-c938ad444fc0",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "sortFieldsUi": {
+          "sortField": [
+            {
+              "fieldName": "price",
+              "order": "=descending"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.sort",
+      "typeVersion": 1,
+      "position": [
+        -432,
+        -80
+      ],
+      "id": "ceddba74-26a7-4729-8b7e-b92fed2933e6",
+      "name": "Sort"
+    },
+    {
+      "parameters": {
+        "fieldsToSummarize": {
+          "values": [
+            {
+              "field": "id"
+            },
+            {
+              "aggregation": "min",
+              "field": "price"
+            }
+          ]
+        },
+        "fieldsToSplitBy": "category",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.summarize",
+      "typeVersion": 1.1,
+      "position": [
+        -432,
+        144
+      ],
+      "id": "dbf6c5be-e8cc-4509-82f1-258377a71550",
+      "name": "Summarize"
+    },
+    {
+      "parameters": {
+        "maxItems": 5
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -256,
+        -80
+      ],
+      "id": "64653147-cadd-4d15-a10a-3a75f12b9803",
+      "name": "Limit"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Sort",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Summarize",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sort": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": null,
+  "nodeGroups": [],
+  "versionId": "59450348-484c-49fc-8c47-59e8abe648a1",
+  "activeVersionId": null,
+  "versionCounter": 24,
+  "triggerCount": 0,
+  "sourceWorkflowId": null,
+  "tags": [],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}

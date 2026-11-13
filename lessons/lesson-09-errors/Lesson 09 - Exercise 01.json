@@ -1,0 +1,66 @@
+{
+  "updatedAt": "2026-11-11T06:41:02.557Z",
+  "createdAt": "2026-11-11T06:28:01.316Z",
+  "id": "YkdYtDwGTOExTzDY",
+  "name": "Lesson 09 - Exercise 01",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -928,
+        -224
+      ],
+      "id": "9102a69c-cb04-42f2-ab71-eb8b27f11a32",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://jsonplaceholder.typicode.com/users",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        -608,
+        -224
+      ],
+      "id": "2aa188af-21cf-41a5-bc28-dc7e67e79ae7",
+      "name": "HTTP Request"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": null,
+  "nodeGroups": [],
+  "versionId": "229f68ed-8e97-46f1-b776-6b6e254684fe",
+  "activeVersionId": null,
+  "versionCounter": 8,
+  "triggerCount": 0,
+  "sourceWorkflowId": null,
+  "tags": [],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}

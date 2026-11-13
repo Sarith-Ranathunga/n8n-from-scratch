@@ -1,0 +1,101 @@
+{
+  "updatedAt": "2026-11-09T12:43:40.367Z",
+  "createdAt": "2026-11-09T12:29:05.247Z",
+  "id": "7uNenpyILj2UxUHS",
+  "name": "Lesson 02 - Exercise 03",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -208,
+        -96
+      ],
+      "id": "2fca45d0-46ee-47c4-9a57-bfcdc108bf0c",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "     https://api.open-meteo.com/v1/forecast?latitude=6.93&longitude=79.85&current=temperature_2m,wind_speed_10m",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        16,
+        -96
+      ],
+      "id": "2e3a954e-2dbd-4235-a145-3eeed214afa9",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d398911c-5a61-4ec4-9ea3-b411d553bcdf",
+              "name": "message",
+              "value": "=Right now in Colombo it is {{ $json.current.temperature_2m }}{{ $json.current_units.temperature_2m }} with wind at {{ $json.current.wind_speed_10m }}{{ $json.current_units.wind_speed_10m }}.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        240,
+        -96
+      ],
+      "id": "e89ad0a3-9b54-4db7-bec0-1b4ce9c7a8f8",
+      "name": "Edit Fields"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": null,
+  "nodeGroups": [],
+  "versionId": "877dc220-ab91-4635-aa7a-e08b6c2e47dd",
+  "activeVersionId": null,
+  "versionCounter": 28,
+  "triggerCount": 0,
+  "sourceWorkflowId": null,
+  "tags": [],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}

@@ -1,0 +1,172 @@
+{
+  "updatedAt": "2026-11-10T13:38:11.724Z",
+  "createdAt": "2026-11-10T12:12:27.895Z",
+  "id": "sGGoTZMgVl4aXqmo",
+  "name": "Lesson 08 - Exercise 02",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -496,
+        -144
+      ],
+      "id": "6acbc901-a5e1-46b5-9454-558876f0f611",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "79cffe6f-2570-4d76-98ec-873d9ced3adf",
+              "name": "messages",
+              "value": "     [\"Where is my order #101? I ordered it 5 days ago.\", \"The shirt I received is torn. I want a refund!\", \"Do you have this dress in size XL?\", \"Hi, my order hasn't arrived yet, can you check?\"]",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -320,
+        -144
+      ],
+      "id": "3665f300-d51f-4706-85bf-1a6befa8698c",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "messages",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1.1,
+      "position": [
+        -144,
+        -144
+      ],
+      "id": "b2147ac3-c8ba-41ca-94e2-79248aa6183e",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $json.messages }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "order_status",
+              "description": "Customer asks where their order is or about delivery"
+            },
+            {
+              "category": "complaint",
+              "description": "Customer is unhappy, reports damage, or wants a refund"
+            },
+            {
+              "category": "product_question\t",
+              "description": "Customer asks about products, sizes, colours or stock"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        48,
+        -160
+      ],
+      "id": "5258060f-aac4-4d37-b4a9-3621e3798601",
+      "name": "Text Classifier"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        48,
+        64
+      ],
+      "id": "c09acb87-1b12-4249-a45c-8c52580ad454",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "nodeGroups": [],
+  "versionId": "4bca3f30-a983-40f7-939a-0d0d911293a5",
+  "activeVersionId": null,
+  "versionCounter": 34,
+  "triggerCount": 0,
+  "sourceWorkflowId": null,
+  "tags": [],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}

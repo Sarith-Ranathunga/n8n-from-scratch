@@ -1,0 +1,94 @@
+{
+  "updatedAt": "2026-11-11T07:32:43.113Z",
+  "createdAt": "2026-11-11T07:16:25.345Z",
+  "id": "TquL0BXIq1IWrDJT",
+  "name": "Lesson 09 - Exercise 05 (Broken Job)",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -1008,
+        -240
+      ],
+      "id": "f1624b89-7915-4604-89a9-515e027c64e4",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://httpbin.org/status/500",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        -800,
+        -240
+      ],
+      "id": "53d8db9d-5b5a-41db-a098-ad3ef92206e9",
+      "name": "HTTP Request",
+      "retryOnFail": false,
+      "notesInFlow": false,
+      "alwaysOutputData": false,
+      "executeOnce": false
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "errorWorkflow": "vIDRpeNiYF5rOK6E",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": [
+        null
+      ],
+      "recurrenceRuleSignatures": [
+        null
+      ]
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "nodeGroups": [],
+  "versionId": "ba1aaf62-0366-47c5-ab40-0e1e3ceba25c",
+  "activeVersionId": null,
+  "versionCounter": 15,
+  "triggerCount": 1,
+  "sourceWorkflowId": null,
+  "tags": [],
+  "versionMetadata": {
+    "name": "Lesson 09 - Exercise 05 (Broken Job)",
+    "description": ""
+  }
+}

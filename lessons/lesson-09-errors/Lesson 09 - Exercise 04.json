@@ -1,0 +1,122 @@
+{
+  "updatedAt": "2026-11-11T06:53:04.988Z",
+  "createdAt": "2026-11-11T06:46:48.392Z",
+  "id": "d6ZYKZqXrBCIHOBZ",
+  "name": "Lesson 09 - Exercise 04",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "path": "user",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.2,
+      "position": [
+        -480,
+        -160
+      ],
+      "id": "d7b02c9c-bf29-4e1a-904b-c83228215c14",
+      "name": "Webhook",
+      "webhookId": "8961fa25-c5e7-4547-bf6d-fd625a957839"
+    },
+    {
+      "parameters": {
+        "url": "=https://jsonplaceholder.typicode.com/users/{{ $json.query.id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        -256,
+        -160
+      ],
+      "id": "4eb4deb0-1d2a-4f12-abe5-f64d604aed40",
+      "name": "HTTP Request",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"found\": true, \"name\": $json.name, \"email\": $json.email, \"city\": $json.address.city } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -32,
+        -204
+      ],
+      "id": "6f68adc4-f05e-4fdf-b20f-ea3e2ce0f42b",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"found\": false, \"message\": \"Sorry, no customer with that ID.\" } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -32,
+        -64
+      ],
+      "id": "4715b264-a8a1-429f-972d-4c1c17e161cd",
+      "name": "Respond to Webhook1"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": null,
+  "nodeGroups": [],
+  "versionId": "5d681e6a-52a4-47ad-a1e8-e6945813ea06",
+  "activeVersionId": null,
+  "versionCounter": 27,
+  "triggerCount": 0,
+  "sourceWorkflowId": null,
+  "tags": [],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}

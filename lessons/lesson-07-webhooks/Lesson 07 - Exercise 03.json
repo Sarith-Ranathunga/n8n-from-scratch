@@ -1,0 +1,139 @@
+{
+  "updatedAt": "2026-11-10T10:23:15.154Z",
+  "createdAt": "2026-11-10T10:10:35.622Z",
+  "id": "opfdINBpESVqjgel",
+  "name": "Lesson 07 - Exercise 03",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "new-order",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.2,
+      "position": [
+        -1184,
+        -336
+      ],
+      "id": "f00bfe7b-1fd0-451f-b891-f2f979e186ae",
+      "name": "Webhook",
+      "webhookId": "fd25d9b3-357e-47db-8bed-6612b6f5b00f"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 4
+          },
+          "conditions": [
+            {
+              "id": "234bcdea-a26e-4a8e-a020-35b75772b49e",
+              "leftValue": "={{ $json.body.amount }}",
+              "rightValue": 5000,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.4,
+      "position": [
+        -960,
+        -336
+      ],
+      "id": "303b7f9b-498f-4e1f-96fa-12c1e1af7cb0",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "=     {\n       \"orderId\": {{ $json.body.orderId }},\n       \"status\": \"needs_approval\"\n     }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -704,
+        -464
+      ],
+      "id": "9481d5cb-91d1-464b-9d7c-c3f763758de6",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"status\": \"auto_approved\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -704,
+        -240
+      ],
+      "id": "f80fbb9f-1289-4c75-96ca-2bba974e6c04",
+      "name": "Respond to Webhook1"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": null,
+  "nodeGroups": [],
+  "versionId": "fb74aaa6-2136-4ef5-b3f0-a344d64aa5e9",
+  "activeVersionId": null,
+  "versionCounter": 21,
+  "triggerCount": 0,
+  "sourceWorkflowId": null,
+  "tags": [],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}

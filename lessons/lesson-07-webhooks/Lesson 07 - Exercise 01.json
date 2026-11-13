@@ -1,0 +1,44 @@
+{
+  "updatedAt": "2026-11-10T09:56:05.586Z",
+  "createdAt": "2026-11-10T09:55:05.096Z",
+  "id": "rrhSoALqDvqiGWi8",
+  "name": "Lesson 07 - Exercise 01",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "path": "hello",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.2,
+      "position": [
+        -448,
+        -96
+      ],
+      "id": "90b18970-0728-4cb7-b91b-240c835606aa",
+      "name": "Webhook",
+      "webhookId": "2b382f39-89f4-4277-b929-823663d4818c"
+    }
+  ],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": null,
+  "nodeGroups": [],
+  "versionId": "394efaa7-a59e-4349-88e8-6d827dd0dcf4",
+  "activeVersionId": null,
+  "versionCounter": 4,
+  "triggerCount": 0,
+  "sourceWorkflowId": null,
+  "tags": [],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}
